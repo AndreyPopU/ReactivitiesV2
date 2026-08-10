@@ -1,0 +1,21 @@
+import { Card, CardMedia, CardContent, Typography, CardActions, Button } from "@mui/material";
+import type { Activity } from "../../../lib/types";
+
+type Props = { activity: Activity; cancelSelectActivity: () => void; openForm: (id: string) => void };
+
+export default function ActivityDetails({ activity, cancelSelectActivity, openForm }: Props) {
+  return (
+    <Card sx={{borderRadius: 3}}>
+        <CardMedia component="img" image={`/images/categoryImages/${activity.category}.jpg`} />
+        <CardContent>
+            <Typography variant="h5">{activity.title}</Typography>
+            <Typography variant="subtitle1">{activity.date}</Typography>
+            <Typography variant="body1">{activity.description}</Typography>
+        </CardContent>
+        <CardActions>
+            <Button onClick={() => openForm(activity.id)} color="primary">Edit</Button>
+            <Button onClick={cancelSelectActivity} color="inherit">Cancel</Button>
+        </CardActions>
+    </Card>
+  )
+}
