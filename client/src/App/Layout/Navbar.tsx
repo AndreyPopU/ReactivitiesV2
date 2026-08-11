@@ -1,9 +1,9 @@
 import { Group } from "@mui/icons-material";
 import { Box, AppBar, Toolbar, Typography, Button, Container } from "@mui/material";
+import { NavLink } from "react-router";
+import MenuItemLink from "../shared/components/menuItemLink";
 
-type Props = { openForm: () => void };
-
-export default function Navbar({ openForm }: Props) {
+export default function Navbar() {
         return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ backgroundImage: 
@@ -12,18 +12,18 @@ export default function Navbar({ openForm }: Props) {
         <Container maxWidth="xl">
             <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Box>
-                    <Button sx={{ display: 'flex', gap: 2 }}>
+                    <Button component={NavLink} to='/' sx={{ display: 'flex', gap: 2 }}>
                         <Group fontSize="large" />
                         <Typography variant="h4"> Reactivities</Typography>
                     </Button>
                 </Box>
                 <Box sx={{ display: 'flex', gap: 2 }}>
-                    <Button sx={{fontSize: '1.2rem', textTransform: 'uppercase', fontWeight: 'bold'}}>Activities</Button>
-                    <Button sx={{fontSize: '1.2rem', textTransform: 'uppercase', fontWeight: 'bold'}}>About</Button>
-                    <Button sx={{fontSize: '1.2rem', textTransform: 'uppercase', fontWeight: 'bold'}}>Contact</Button>
-
+                    <MenuItemLink  to={'/activities'}>Activities</MenuItemLink>
+                    <MenuItemLink to={'/createActivity'} >Create Activity</MenuItemLink>
                 </Box>
-                <Button onClick={openForm} size="large" variant="contained" color="warning">Create Activity</Button>
+                <Button>
+                    User Menu
+                </Button>
             </Toolbar>
         </Container>
         

@@ -1,13 +1,13 @@
 import { Card, CardMedia, CardContent, Typography, CardActions, Button } from "@mui/material";
-import type { Activity } from "../../../lib/types";
+import { useNavigate, useParams } from "react-router";
 import { useActivities } from "../../../lib/hooks/useActivities";
 
-type Props = { selectedActivity: Activity; cancelSelectActivity: () => void; openForm: (id: string) => void };
+export default function ActivityDetails() {
+  const navigate = useNavigate();
+  const {id} = useParams(); // useParams() from react-router has to match the Routes.tsx path
+  const {activity, isLoadingActivity} = useActivities(id);
 
-export default function ActivityDetails({ selectedActivity, cancelSelectActivity, openForm }: Props) {
-const {activities} = useActivities();
-  const activity = activities?.find(x => x.id === selectedActivity?.id);
-
+  if (isLoadingActivity) return <Typography>Loading Activity...</Typography>;
   if (!activity) return <Typography>Activity not found</Typography>;
 
   return (
@@ -19,8 +19,8 @@ const {activities} = useActivities();
             <Typography variant="body1">{activity.description}</Typography>
         </CardContent>
         <CardActions>
-            <Button onClick={() => openForm(activity.id)} color="primary">Edit</Button>
-            <Button onClick={cancelSelectActivity} color="inherit">Cancel</Button>
+            <Button onClick={() => navigate(`/manage/${activity.id}`)} color="primary">Edit</Button>
+            <Button onClick={() => navigate('/activities')} color="inherit">Cancel</Button>
         </CardActions>
     </Card>
   )
