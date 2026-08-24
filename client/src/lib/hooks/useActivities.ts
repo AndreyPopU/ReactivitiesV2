@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { Activity } from "../types";
+import type { Activity, CreateActivity } from "../types";
 import agent from "../api/agent";
 import { useLocation } from "react-router";
 
@@ -37,16 +37,16 @@ const {data: activities, isPending} = useQuery({
         }
     });
 
-
+    
     const createActivity = useMutation({
-        mutationFn: async (activity: Activity) => {
-            const response = await agent.post('/activities', activity);
-            return response.data; // ID of created activity
+        mutationKey: ["createActivity"],
+        mutationFn: async (activity: CreateActivity) => {
+            const response = await agent.post<string>('/activities', activity);
+            return response.data;
         },
         onSuccess: async () => 
         {
             await queryClient.invalidateQueries({ queryKey: ['activities'] });
-
         }
     })
 
