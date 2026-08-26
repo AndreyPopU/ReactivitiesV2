@@ -19,7 +19,7 @@ public class DbInitializer
 
             foreach (var user in users)
             {
-                await manager.CreateAsync(user, "Pa$$s0rd");
+                await manager.CreateAsync(user, "Pa$$w0rd");
             }
         }
 
