@@ -11,6 +11,8 @@ import ServerError from "../../Features/errors/ServerError";
 import LoginForm from "../../Features/Account/LoginForm";
 import RequireAuth from "./RequireAuth";
 import RegisterForm from "../../Features/Account/RegisterForm";
+import TodosExample from "../../Features/Test/TodosExample";
+import SingleTodo from "../../Features/Test/SingleTodo";
 
 export const router = createBrowserRouter([
     {
@@ -28,6 +30,8 @@ export const router = createBrowserRouter([
             { path: 'register', element: <RegisterForm /> },
             { path: 'counter', element: <Counter key='edit'/> },
             { path: 'errors', element: <TestErrors /> },
+            { path: 'todos', element: <TodosExample /> },
+            { path: 'todos/:id', element: <SingleTodo /> },
             { path: 'not-found', element: <NotFound /> },
             { path: 'server-error', element: <ServerError /> },
             { path: '*', element: <Navigate replace to='/not-found' /> }

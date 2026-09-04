@@ -9,6 +9,18 @@ export interface Activity {
     venue: string
     latitude: number
     longitude: number
+    attendees: Profile[]
+    isGoing: boolean
+    isHost: boolean
+    hostId: string
+    hostDisplayName: string
+}
+
+type Profile = {
+    id: string
+    displayName: string
+    bio?: string
+    imageUrl?: string
 }
 
 export interface CreateActivity {
@@ -25,4 +37,9 @@ type User = {
     email: string
     displayName: string
     imageUrl?: string
+}
+
+type Todo = {
+    id: number;
+    title: string;
 }

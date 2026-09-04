@@ -29,6 +29,7 @@ export default function Navbar() {
                     <MenuItemLink to={'/counter'} >Counter</MenuItemLink>
                     <MenuItemLink to={'/login'} >Login</MenuItemLink>
                     <MenuItemLink to={'/errors'} >Errors</MenuItemLink>
+                    <MenuItemLink to={'/todos'} >Test</MenuItemLink>
                 </Box>
 
                 <Box sx={{display:"flex", alignItems:"center"}}>

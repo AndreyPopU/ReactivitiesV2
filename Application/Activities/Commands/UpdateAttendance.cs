@@ -34,7 +34,7 @@ public class UpdateAttendance
 
             if (attendance != null)
             {
-                if (isHost) activity.isCanceled = !activity.isCanceled;
+                if (isHost) activity.isCancelled = !activity.isCancelled;
                 else activity.Attendees.Remove(attendance);
             }
             else

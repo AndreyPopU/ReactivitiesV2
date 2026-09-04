@@ -8,6 +8,19 @@ public class DbInitializer
 {
     public static async Task SeedData(AppDbContext context, UserManager<User> manager)
     {
+        if (!context.Todos.Any())
+        {
+            var todos = new List<Todo>
+            {
+                new() {Title = "Todo 1"},
+                new() {Title = "Todo 2"},
+                new() {Title = "Todo 3"}
+            };
+
+            context.Todos.AddRange(todos);
+            await context.SaveChangesAsync();
+        }
+
         var users = new List<User>
             {
                 new() {DisplayName="Bob", UserName="bob@test.com", Email="bob@test.com"},
