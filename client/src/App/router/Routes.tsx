@@ -13,6 +13,7 @@ import RequireAuth from "./RequireAuth";
 import RegisterForm from "../../Features/Account/RegisterForm";
 import TodosExample from "../../Features/Test/TodosExample";
 import SingleTodo from "../../Features/Test/SingleTodo";
+import ProfilePage from "../../Features/profiles/ProfilePage";
 
 export const router = createBrowserRouter([
     {
@@ -24,6 +25,7 @@ export const router = createBrowserRouter([
                 { path: 'activities/:id', element: <ActivityDetailPage /> },
                 { path: 'createActivity', element: <ActivityForm key='create'/> },
                 { path: 'manage/:id', element: <ActivityForm key='edit'/> },
+                { path: 'profiles/:id', element: <ProfilePage /> },
             ]},
             { path: '', element: <HomePage /> },
             { path: 'login', element: <LoginForm /> },

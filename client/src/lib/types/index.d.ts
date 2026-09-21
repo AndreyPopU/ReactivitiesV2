@@ -14,13 +14,21 @@ export interface Activity {
     isHost: boolean
     hostId: string
     hostDisplayName: string
+    hostImageUrl?: string
 }
 
-type Profile = {
+export type Profile = {
     id: string
     displayName: string
     bio?: string
     imageUrl?: string
+}
+
+export type Photo = {
+    id: string
+    url: string
+    publicId: string
+    userId: string
 }
 
 export interface CreateActivity {

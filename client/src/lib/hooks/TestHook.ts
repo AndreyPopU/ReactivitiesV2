@@ -63,6 +63,20 @@ export const useTodos = (id?: string) => {
         }
     });
 
+    const AddToDo = useMutation({
+        mutationFn: async (toDoToAdd : string) => {
+            return agent.post('/todos', { toDoToAdd })
+        },
+        onSettled: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ['todos']
+            });
+        },
+        onError: (err) => {
+            console.log(err);
+        }
+    })
+
     return {
         todosQuery,
         addTodoMutation,
@@ -71,6 +85,7 @@ export const useTodos = (id?: string) => {
         isPendingAdd: addTodoMutation.isPending,
         isPendingRemove: removeTodoMutation.isPending,
         isPending: todosQuery.isPending,
-        variables: addTodoMutation
+        variables: addTodoMutation,
+        AddToDo,
     };
 };

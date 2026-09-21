@@ -31,6 +31,7 @@ builder.Services.AddCors();
 builder.Services.AddMediatR(x =>
 {
     x.RegisterServicesFromAssemblyContaining<Application.Activities.Queries.GetActivityList>();
+    x.RegisterServicesFromAssemblyContaining<Application.Profiles.Queries.GetProfile>();
     x.AddOpenBehavior(typeof(ValidationBehaviour<,>));
 });
 

@@ -1,3 +1,4 @@
+using Application;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -43,5 +44,11 @@ public class TodosController(AppDbContext context) : BaseApiController
         await context.SaveChangesAsync();
 
         return NoContent();
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<string>> AddToDo(string update)
+    {
+        return HandleResult(await Mediator.Send(new AddToDoCommand.Command { ToDoToAdd = update }));
     }
 }

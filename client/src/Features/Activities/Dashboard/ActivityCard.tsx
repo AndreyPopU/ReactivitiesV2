@@ -22,7 +22,7 @@ return (
             }}
         >
             <CardHeader
-    avatar={<Avatar sx={{ height: 80, width: 80 }} />}
+    avatar={<Avatar src={activity.hostImageUrl} alt="image of host" sx={{ height: 80, width: 80 }} />}
     title={activity.title}
     titleTypographyProps={{
         fontWeight: 'bold',
