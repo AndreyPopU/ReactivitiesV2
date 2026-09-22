@@ -1,13 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import type { Photo, Profile } from "../types";
+import type { Photo, Profile, User } from "../types";
 import agent from "../api/agent";
+import { useMemo } from "react";
 
-export const useProfile = (id?: string) => {
+export const useProfile = (id?: string, predicate?: string) => {
     const queryClient = useQueryClient();
 
     const { data: profile, isLoading: loadingProfile } = useQuery<Profile>({
         queryKey: ['profile', id],
-        enabled: !!id,
+        enabled: !!id  && !predicate, 
         queryFn: async () => {
             const response = await agent.get<Profile>(`/profiles/${id}`)
             return response.data;
@@ -20,8 +21,17 @@ export const useProfile = (id?: string) => {
             const response = await agent.get<Photo[]>(`/profiles/${id}/photos`)
             return response.data;
         },
-        enabled: !!id
+        enabled: !!id && !predicate
     });
+
+    const {data: followings, isLoading: loadingFollowings} = useQuery<Profile[]>({
+        queryKey: ['followings', id, predicate],
+        queryFn: async () => {
+            const response = await agent.get<Profile[]>(`/profiles/${id}/follow-list?predicate=${predicate}`);
+            return response.data;
+        },
+        enabled: !!id && !!predicate
+    })
 
     const deletePhoto = useMutation({
         mutationFn: async (photoToDelete: Photo) => {
@@ -51,16 +61,16 @@ export const useProfile = (id?: string) => {
     })
 
     const changeBio = useMutation({
-        mutationFn: async (bio : string) => {
+        mutationFn: async (bio: string) => {
             const response = await agent.put<string>("/profiles/bio", { bio })
             return response.data;
         },
         onSuccess: (newBio, _variables, _context) => {
             queryClient.setQueryData<Profile>(
                 ['profile', id],
-                (currentProfile) => currentProfile 
-                ? { ...currentProfile, bio: newBio}
-                : currentProfile
+                (currentProfile) => currentProfile
+                    ? { ...currentProfile, bio: newBio }
+                    : currentProfile
             );
             console.log("Successfully updated bio");
         },
@@ -82,7 +92,7 @@ export const useProfile = (id?: string) => {
             await queryClient.cancelQueries({ queryKey: ['profilePhotos', id] });
 
             const previousPhotos = queryClient.getQueryData<Photo[]>(['profilePhotos', id]);
-            
+
             const temporaryUrl = URL.createObjectURL(photo);
 
             // Temporary Photo
@@ -115,15 +125,38 @@ export const useProfile = (id?: string) => {
             });
         },
         onSettled: (_data, _error, _file, context) => {
-        if (context?.temporaryUrl) {
-            URL.revokeObjectURL(context.temporaryUrl);
-        }
+            if (context?.temporaryUrl) {
+                URL.revokeObjectURL(context.temporaryUrl);
+            }
 
-        queryClient.invalidateQueries({
-            queryKey: ['profilePhotos', id]
-        });
-    }
+            queryClient.invalidateQueries({
+                queryKey: ['profilePhotos', id]
+            });
+        }
     })
+
+    const updateFollowing = useMutation({
+        mutationFn: async () => {
+            agent.post(`/profiles/${id}/follow`);
+        },
+        onSuccess: () => {
+            queryClient.setQueryData(['profile', id], (profile: Profile) => {
+                queryClient.invalidateQueries({queryKey: ['followings', id, 'followers']})
+                if (!profile || profile.followersCount == undefined) return profile;
+                return {
+                    ...profile,
+                    following: !profile.following,
+                    followersCount: profile.following
+                        ? profile.followersCount - 1
+                        : profile.followersCount + 1
+                }
+            })
+        }
+    })
+
+    const isCurrentUser = useMemo(() => {
+        return id === queryClient.getQueryData<User>(['user'])?.id
+    }, [id, queryClient])
 
     return {
         profile,
@@ -131,6 +164,10 @@ export const useProfile = (id?: string) => {
         photosQuery,
         deletePhoto,
         addPhoto,
-        changeBio
+        changeBio,
+        updateFollowing,
+        isCurrentUser,
+        followings,
+        loadingFollowings
     }
 }

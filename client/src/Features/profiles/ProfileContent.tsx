@@ -4,6 +4,7 @@ import ProfilePhotos from "./ProfilePhotos";
 import { useParams } from "react-router";
 import ProfileAbout from "./ProfileAbout";
 import ImageDropzone from "./ImageDropzone";
+import ProfileFollowings from "./ProfileFollowings";
 
 export default function ProfileContent() {
     const [value, setValue] = useState(0);
@@ -15,8 +16,8 @@ export default function ProfileContent() {
         { label: 'About', content: <div><ProfileAbout /></div> },
         { label: 'Photos', content: <ProfilePhotos id={id!}/> },
         { label: 'Events', content: <div><ImageDropzone /></div> },
-        { label: 'Followers', content: <div>Followers</div> },
-        { label: 'Following', content: <div>Following</div> },
+        { label: 'Followers', content: <div><ProfileFollowings activeTab={value}/></div> },
+        { label: 'Following', content: <div><ProfileFollowings activeTab={value}/></div> },
     ]
     return (
         <Box component={Paper} sx={{
