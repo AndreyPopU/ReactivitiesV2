@@ -2,9 +2,11 @@
 using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain
 {
+    [Index(nameof(Date))]
     public class Activity
     {
         public string ID { get; set; } = Guid.NewGuid().ToString();

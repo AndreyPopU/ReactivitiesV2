@@ -1,3 +1,8 @@
+export type PagedList<T, TCursor> = {
+    items: T[],
+    nextCursor: TCursor
+}
+
 export interface Activity {
     id: string
     title: string
@@ -43,14 +48,14 @@ export interface CreateActivity {
     venue: string
 }
 
-type User = {
+export type User = {
     id: string
     email: string
     displayName: string
     imageUrl?: string
 }
 
-type ChatComment = {
+export type ChatComment = {
     id: string
     createdAt: Date
     body: string
@@ -59,7 +64,7 @@ type ChatComment = {
     imageUrl?: string
 }
 
-type Todo = {
+export type Todo = {
     id: number;
     title: string;
 }

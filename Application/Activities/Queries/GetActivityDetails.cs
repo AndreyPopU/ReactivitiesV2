@@ -25,7 +25,7 @@ namespace Application.Activities.Queries
             public async Task<Result<ActivityDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var activity = await context.Activities
-                .ProjectTo<ActivityDto>(mapper.ConfigurationProvider, new {currentUserId = userAccessor.GetUserAsync()})
+                .ProjectTo<ActivityDto>(mapper.ConfigurationProvider, new {currentUserId = userAccessor.GetUserID()})
                 .FirstOrDefaultAsync(x => request.Id == x.ID, cancellationToken);
 
                 if (activity == null) return Result<ActivityDto>.Failure("Activity not found", 404);
